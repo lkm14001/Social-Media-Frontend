@@ -14,6 +14,7 @@ import {
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
+  getLoggedInUserDataAsync,
   getuserAsync,
   logoutAsync,
   toggleColorMode,
@@ -116,7 +117,7 @@ const Navbar = () => {
       component="div"
       sx={{
         height: "10vh",
-        width: "100vw",
+        width: "100%",
         display: "flex",
         justifyContent: "space-between",
         px: 5,
@@ -140,7 +141,10 @@ const Navbar = () => {
           sx={(theme) => ({
             cursor: "pointer",
           })}
-          onClick={() => navigate("/home")}
+          onClick={() => {
+            dispatch(getLoggedInUserDataAsync());
+            navigate("/home");
+          }}
         >
           <Typography
             sx={{

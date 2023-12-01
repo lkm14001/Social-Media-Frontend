@@ -11,6 +11,7 @@ import {
   checkAuthAPI,
   editPostAPI,
   getLoggedInUserDataAPI,
+  getUpdatedPost,
   getUserAPI,
   likePostAPI,
   removeFriendAPI,
@@ -18,7 +19,6 @@ import {
   sendFriendRequestAPI,
   userSearchAPI,
 } from "./userAPI";
-
 
 export interface IUser {
   _id: string;
@@ -49,7 +49,7 @@ export interface IComments {
   _id: string;
   comment: string;
   post: string;
-  user: string;
+  user: IUser;
 }
 
 export const loginUserAsync = createAsyncThunk(
@@ -272,6 +272,18 @@ export const checkAuthAsync = createAsyncThunk(
   }
 );
 
+export const getUpdatedPostAsync = createAsyncThunk(
+  "socialMedia/getUpdatedPostAsync",
+  async (postId: string, { rejectWithValue }) => {
+    try {
+      const response = await getUpdatedPost(postId);
+      return response;
+    } catch (error) {
+      return rejectWithValue((error as Error).message);
+    }
+  }
+);
+
 interface InitialState {
   loggedInUser: IUser;
   loginLoadingState: boolean;
@@ -316,13 +328,17 @@ const userSlice = createSlice({
       state.darkMode = !state.darkMode;
     },
     getFriendsPosts: (state) => {
-      state.friendsPosts = state.loggedInUser.following.reduce(
-        (acc: IPosts[], obj) => acc.concat(obj.posts),
-        []
-      );
+      state.friendsPosts = state.loggedInUser.following
+        .reduce((acc: any, obj) => acc.concat(obj.posts), [])
+        .sort(
+          (a: any, b: any) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
+        );
     },
+    // recieveUpdatedPostContent: (state, action) => {
+    //   state.friendsPosts.map();
+    // },
     clearState: (state) => {
-      state = initialState
+      state = initialState;
       // localStorage.removeItem("persist:root");
     },
   },
@@ -333,7 +349,7 @@ const userSlice = createSlice({
     });
     builder.addCase(checkAuthAsync.rejected, (state, action) => {
       state.isLoggedIn = false;
-      console.trace('Checing Auth')
+      console.trace("Checing Auth");
       state.action = { message: action.payload as string, type: "error" };
     });
     builder.addCase(getLoggedInUserDataAsync.fulfilled, (state, action) => {
@@ -397,6 +413,13 @@ const userSlice = createSlice({
     builder.addCase(editPostAsync.rejected, (state, action) => {
       state.action = { message: action.payload as string, type: "error" };
     });
+    builder.addCase(getUpdatedPostAsync.fulfilled, (state, action) => {
+      state.friendsPosts.forEach((post: IPosts) => {
+        if (post._id === action.payload._id) {
+          post = action.payload;
+        }
+      });
+    });
     builder.addCase(addCommentAsync.fulfilled, (state, action) => {
       state.action = { message: action.payload as string, type: "success" };
     });
@@ -433,4 +456,4 @@ const userSlice = createSlice({
 export const { toggleColorMode, getFriendsPosts, clearState } =
   userSlice.actions;
 export default userSlice.reducer;
-export const userState = (state: RootState) => state.user
+export const userState = (state: RootState) => state.user;

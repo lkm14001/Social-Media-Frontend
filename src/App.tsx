@@ -9,6 +9,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import {
   checkAuthAsync,
+  getFriendsPosts,
   logoutAsync,
   userState,
 } from "./redux/slices/userSlice/userSlice";
@@ -30,10 +31,11 @@ const App = () => {
   useEffect(() => {
     const checkAuth = () => {
       dispatch(checkAuthAsync()).then((res) => {
-        if (res.meta.requestStatus === "rejected") {
-          navigate("/login");
-        } else if (res.meta.requestStatus === "fulfilled") {
+        if (res.meta.requestStatus === "fulfilled") {
+          dispatch(getFriendsPosts());
           navigate("/home");
+        } else if (res.meta.requestStatus === "rejected") {
+          navigate("/login");
         }
       });
     };
@@ -55,7 +57,7 @@ const App = () => {
     async (config) => {
       const response = refreshToken();
       if ((await response).data.success === true) {
-        console.log("REFRESH TOKEN VALID");
+        // console.log("REFRESH TOKEN VALID");
         config.withCredentials = true;
       } else {
         dispatch(logoutAsync()).then((res) => {
@@ -63,7 +65,7 @@ const App = () => {
             navigate("/login");
           }
         });
-        console.log("LOGEGED OUT");
+        // console.log("LOGEGED OUT");
       }
       return config;
     },

@@ -254,6 +254,8 @@ const Profile = () => {
                 >
                   <Box sx={style}>
                     <Post
+                      postId={post._id}
+                      userId={user._id}
                       comments={post.comments}
                       content={post.content}
                       firstName={user.firstName}

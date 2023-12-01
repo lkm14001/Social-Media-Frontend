@@ -21,6 +21,8 @@ const PostsList = () => {
     >
       {posts.map((post: IPosts, key: any) => (
         <Post
+          postId={post._id}
+          userId={(post.user as IUser)._id}
           username={(post.user as IUser).username}
           comments={post.comments}
           content={post.content}

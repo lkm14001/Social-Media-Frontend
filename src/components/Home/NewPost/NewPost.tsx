@@ -42,7 +42,6 @@ const NewPost = () => {
 
   const [image, setImage] = useState<any>(null);
   const [preview, setPreview] = useState<string>("");
-  const [imageUrl, setImageUrl] = useState<string>("");
 
   const [action, setAction] = useState<{ message: string; type: string }>({
     message: "",
@@ -83,44 +82,35 @@ const NewPost = () => {
     setPreview("");
   };
 
-  const handlePhotoUpload = () => {
+  const publishPost = () => {
+    const id = uuidv4();
     const picRef = ref(
       storage,
-      `${process.env.REACT_APP_FIREBASE_STORAGE_POSTS}/${
-        loggedInUser.email
-      }/${uuidv4()}`
+      `${process.env.REACT_APP_FIREBASE_STORAGE_POSTS}/${loggedInUser.email}/${id}`
     );
     uploadBytes(picRef, image).then(() => {
       getDownloadURL(picRef).then((url) => {
-        setImageUrl(url);
+        const postData = {
+          email: loggedInUser.email,
+          post: {
+            content: postContent,
+            image: url,
+            user: loggedInUser._id,
+          },
+        };
+        dispatch(addPostAsync(postData)).then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            setAction({ message: res.payload, type: "success" });
+            handlePostSnackClick();
+            setImage(null);
+            setPreview("");
+            setPostContent("");
+            dispatch(getLoggedInUserDataAsync());
+          } else {
+            setAction({ message: res.payload, type: "error" });
+          }
+        });
       });
-    });
-  };
-
-  const publishPostHandler = () => {
-    handlePhotoUpload();
-    const postData = {
-      email: loggedInUser.email,
-      post: {
-        content: postContent, 
-        image: imageUrl,
-        user: loggedInUser._id,
-      },
-    };
-    console.log('IMAGE URL',imageUrl)
-    console.log(postData)
-    dispatch(addPostAsync(postData)).then((res) => {
-      if (res.meta.requestStatus === "fulfilled") {
-        setAction({ message: res.payload, type: "success" });
-        handlePostSnackClick();
-        setImageUrl("");
-        setImage(null);
-        setPreview("");
-        setPostContent("");
-        dispatch(getLoggedInUserDataAsync());
-      } else {
-        setAction({ message: res.payload, type: "error" });
-      }
     });
   };
 
@@ -279,7 +269,7 @@ const NewPost = () => {
               size="large"
               variant="postButton"
               startIcon={<MdPublish />}
-              onClick={publishPostHandler}
+              onClick={publishPost}
             >
               Post
             </Button>

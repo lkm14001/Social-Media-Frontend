@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IUser } from "./userSlice";
+import { IPosts, IUser } from "./userSlice";
 import { axiosAuthInstance } from "../../../utils/instance.axios";
 
 export const checkAuthAPI = () => {
@@ -138,6 +138,23 @@ export const addPostAPI = (email: string, post: any) => {
   });
 };
 
+export const getUpdatedPost = (postId: string) => {
+  return new Promise<IPosts>((resolve, reject) => {
+    axiosAuthInstance
+      .get(
+        `${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_PROFILE}${process.env.REACT_APP_GET_UPDATED_POST}/${postId}`
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          resolve(res.data.updatedPost);
+        }
+      })
+      .catch((error) => {
+        reject(new Error(error.response?.data?.error));
+      });
+  });
+};
+
 export const editPostAPI = (email: string, postId: string, post: any) => {
   return new Promise<any>((resolve, reject) => {
     axiosAuthInstance
@@ -161,7 +178,7 @@ export const addCommentAPI = (email: string, postId: string, comment: any) => {
     axiosAuthInstance
       .post(
         `${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_PROFILE}/${email}${process.env.REACT_APP_ADD_COMMENT}/${postId}`,
-        comment
+        { comment }
       )
       .then((res) => {
         if (res.status === 200) {
