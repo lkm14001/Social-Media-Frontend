@@ -1,0 +1,293 @@
+import {
+  Avatar,
+  Box,
+  Button,
+  Divider,
+  Modal,
+  Paper,
+  Typography,
+} from "@mui/material";
+import React, { useState } from "react";
+import {
+  IPosts,
+  sendFriendRequestAsync,
+  userState,
+} from "../../../redux/slices/userSlice/userSlice";
+import { FiUserPlus } from "react-icons/fi";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import Post from "../Post/Post";
+
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  bgcolor: "background.widget",
+  boxShadow: 24,
+  borderRadius: 4,
+  // p: 3,
+};
+
+const Profile = () => {
+  // const { userId } = useParams();
+  // useEffect(() => {
+  //   dispatch(getuserAsync(userId as string));
+  // }, [userId]);
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(userState).selecteduser;
+  const loggedInUser = useAppSelector(userState).loggedInUser;
+
+  const [postModalOpen, setPostModalOpen] = useState<boolean>(false);
+
+  const sendFriendRequestHandler = () => {
+    const payload = {
+      userId: loggedInUser._id,
+      friendId: user._id,
+    };
+    dispatch(sendFriendRequestAsync(payload));
+  };
+
+  return (
+    <Paper
+      elevation={0}
+      sx={{
+        backgroundColor: "background.mode",
+        minHeight: "90vh",
+        display: "flex",
+        gap: 2,
+        p: 5,
+      }}
+    >
+      <Paper
+        elevation={0}
+        component="div"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          // border:'1px solid ',
+          backgroundColor: "background.widget",
+          borderRadius: 4,
+          p: 5,
+          gap: 3,
+          hieght: "100%",
+          width: "100%",
+          flexShrink: 1,
+          // alignSelf:'start'
+          flexWrap: "wrap",
+          overflow: "scroll",
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
+          scrollbarWidth: "none",
+        }}
+      >
+        <Box
+          component="div"
+          sx={{
+            display: "flex",
+            gap: 5,
+            flexShrink: 1,
+            // flexWrap:'wrap'
+          }}
+        >
+          <Avatar
+            alt="profile"
+            src={user.profilePicture}
+            sx={{ width: "10rem", height: "10rem" }}
+          />
+          <Box
+            component="div"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+              flexGrow: 1,
+            }}
+          >
+            <Box
+              component="div"
+              sx={{
+                display: "flex",
+                // justifyContent: "",
+                gap: 10,
+                alignItems: "center",
+              }}
+            >
+              <Box
+                component="div"
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontFamily: "Agbalumo",
+                    fontSize: "3rem",
+                    mb: -2,
+                  }}
+                >
+                  {user.firstName + " " + user.lastName}
+                </Typography>
+                <Typography>{"@" + user.username}</Typography>
+              </Box>
+              {user._id === loggedInUser._id ? (
+                <></>
+              ) : (
+                <>
+                  <Button
+                    variant="postButton"
+                    startIcon={<FiUserPlus />}
+                    size="large"
+                    sx={{
+                      px: 5,
+                      py: 2,
+                    }}
+                    onClick={sendFriendRequestHandler}
+                  >
+                    Follow
+                  </Button>
+                </>
+              )}
+            </Box>
+            <Box
+              component="div"
+              sx={{
+                display: "flex",
+                gap: 3,
+                alignItems: "center",
+              }}
+            >
+              <Box
+                component="div"
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontFamily: "Agbalumo",
+                    fontSize: "1.2rem",
+                    fontWeight: "bolder",
+                  }}
+                >
+                  Followers
+                </Typography>
+                <Typography
+                  sx={{
+                    fontFamily: "Agbalumo",
+                    fontSize: "1.2rem",
+                    fontWeight: "bolder",
+                  }}
+                >
+                  {user.followers ? user.followers.length : 0}
+                </Typography>
+              </Box>
+              <Box
+                component="div"
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontFamily: "Agbalumo",
+                    fontSize: "1.2rem",
+                    fontWeight: "bolder",
+                  }}
+                >
+                  Following
+                </Typography>
+                <Typography
+                  sx={{
+                    fontFamily: "Agbalumo",
+                    fontSize: "1.2rem",
+                    fontWeight: "bolder",
+                  }}
+                >
+                  {user.following ? user.following.length : 0}
+                </Typography>
+              </Box>
+            </Box>
+            <Box
+              component="div"
+              sx={{
+                width: "100%",
+              }}
+            >
+              <Typography sx={{ fontSize: "2rem" }}>{user.bio}</Typography>
+            </Box>
+          </Box>
+        </Box>
+        <Divider />
+        <Box
+          component="div"
+          sx={{
+            display: "flex",
+            gap: 2.5,
+            flexWrap: "wrap",
+            "& > * ": {
+              flex: "0 1 25%",
+            },
+          }}
+        >
+          {user.posts.length !== 0 ? (
+            user.posts.map((post: IPosts, key: any) => (
+              <Box>
+                <Box
+                  component={"img"}
+                  src={post.image}
+                  sx={{
+                    height: "20vh",
+                    borderRadius: 4,
+                    cursor: "pointer",
+                  }}
+                  onClick={() => setPostModalOpen(true)}
+                />
+                <Modal
+                  open={postModalOpen}
+                  onClose={() => setPostModalOpen(false)}
+                >
+                  <Box sx={style}>
+                    <Post
+                      comments={post.comments}
+                      content={post.content}
+                      firstName={user.firstName}
+                      image={post.image}
+                      lastName={user.lastName}
+                      profilePic={user.profilePicture}
+                      username={user.username}
+                      key={key}
+                    />
+                  </Box>
+                </Modal>
+              </Box>
+            ))
+          ) : (
+            <>
+              {loggedInUser._id === user._id ? (
+                <>
+                  <Typography>You Have not posted anything yet.</Typography>
+                </>
+              ) : (
+                <>
+                  {user.posts.length === 0 && (
+                    <Typography>
+                      This User has not posted anything yet.
+                    </Typography>
+                  )}
+                </>
+              )}
+            </>
+          )}
+        </Box>
+      </Paper>
+    </Paper>
+  );
+};
+
+export default Profile;
