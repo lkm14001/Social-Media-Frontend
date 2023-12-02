@@ -9,6 +9,7 @@ import {
   addCommentAPI,
   addPostAPI,
   checkAuthAPI,
+  deletePostAPI,
   editPostAPI,
   getLoggedInUserDataAPI,
   getUpdatedPost,
@@ -284,6 +285,21 @@ export const getUpdatedPostAsync = createAsyncThunk(
   }
 );
 
+export const deletePostAsync = createAsyncThunk(
+  "socialMedia/deletePostAsync",
+  async (deleteData: any, { rejectWithValue }) => {
+    try {
+      const response = await deletePostAPI(
+        deleteData.userId,
+        deleteData.postId
+      );
+      return response;
+    } catch (error) {
+      return rejectWithValue((error as Error).message);
+    }
+  }
+);
+
 interface InitialState {
   loggedInUser: IUser;
   loginLoadingState: boolean;
@@ -349,7 +365,6 @@ const userSlice = createSlice({
     });
     builder.addCase(checkAuthAsync.rejected, (state, action) => {
       state.isLoggedIn = false;
-      console.trace("Checing Auth");
       state.action = { message: action.payload as string, type: "error" };
     });
     builder.addCase(getLoggedInUserDataAsync.fulfilled, (state, action) => {
@@ -419,6 +434,12 @@ const userSlice = createSlice({
           post = action.payload;
         }
       });
+    });
+    builder.addCase(deletePostAsync.fulfilled, (state, action) => {
+      state.action = { message: action.payload as string, type: "success" };
+    });
+    builder.addCase(deletePostAsync.rejected, (state, action) => {
+      state.action = { message: action.payload as string, type: "error" };
     });
     builder.addCase(addCommentAsync.fulfilled, (state, action) => {
       state.action = { message: action.payload as string, type: "success" };

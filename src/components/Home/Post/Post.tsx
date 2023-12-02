@@ -7,10 +7,15 @@ import {
   Divider,
   TextField,
 } from "@mui/material";
+import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import React, { useState } from "react";
 import {
   IComments,
   addCommentAsync,
+  deletePostAsync,
   getFriendsPosts,
   getLoggedInUserDataAsync,
   getUpdatedPostAsync,
@@ -23,6 +28,8 @@ import { IoMdShareAlt } from "react-icons/io";
 import { FaImage } from "react-icons/fa";
 import { HiDotsVertical } from "react-icons/hi";
 import { IoSendSharp } from "react-icons/io5";
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
@@ -38,6 +45,20 @@ interface PostProps {
   userId: string;
 }
 
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  display: "flex",
+  flexDirection: "column",
+  gap: 2,
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.widget",
+  boxShadow: 24,
+  p: 4,
+};
+
 const Post: React.FC<PostProps> = React.memo(
   ({
     postId,
@@ -51,11 +72,46 @@ const Post: React.FC<PostProps> = React.memo(
     content,
   }) => {
     const dispatch = useAppDispatch();
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const handleDeleteModalOpen = () => setDeleteModalOpen(true);
+    const handleDeleteModalClose = () => setDeleteModalOpen(false);
+
     const [commentOpen, setCommentOpen] = useState<boolean>(false);
-    const [openPostMenu, setOpenPostMenu] = useState<boolean>(false);
     const [commentContent, setCommentContent] = useState<string>("");
     const commentSectionHandler = () => {
       setCommentOpen(!commentOpen);
+    };
+
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+    const open = Boolean(anchorEl);
+
+    const handlePostMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+      setAnchorEl(event.currentTarget);
+    };
+    const handlePostMenuClose = () => {
+      setAnchorEl(null);
+    };
+
+    const editPostHandler = () => {
+      //open edit Modal
+
+      //close menu
+      handlePostMenuClose();
+    };
+
+    const deletePostHandler = () => {
+      //open delete Modal
+      const payload = {
+        postId: postId,
+        userId: userId,
+      };
+      dispatch(deletePostAsync(payload)).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+        }
+      });
+      //close menu
+      handlePostMenuClose();
     };
 
     const commentSubmitHandler = (
@@ -69,7 +125,7 @@ const Post: React.FC<PostProps> = React.memo(
           comment: commentContent,
         };
         dispatch(addCommentAsync(payload)).then((res) => {
-          setCommentContent('')
+          setCommentContent("");
           if (res.meta.requestStatus === "fulfilled") {
             dispatch(getLoggedInUserDataAsync()).then((res) => {
               if (res.meta.requestStatus === "fulfilled") {
@@ -113,12 +169,72 @@ const Post: React.FC<PostProps> = React.memo(
                 right: 10,
               }}
             >
-              <IconButton onClick={() => setOpenPostMenu(true)}>
+              <IconButton onClick={handlePostMenuOpen}>
                 <HiDotsVertical />
               </IconButton>
             </Box>
           </>
         )}
+        <Menu
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handlePostMenuClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+        >
+          <MenuItem
+            onClick={editPostHandler}
+            sx={{ display: "flex", gap: 1, alignItems: "center" }}
+          >
+            <Box
+              component="div"
+              sx={{
+                display: "flex",
+                gap: 1.5,
+                alignItems: "center",
+              }}
+            >
+              <FaEdit />
+              <Typography>Edit Post</Typography>
+            </Box>
+          </MenuItem>
+          <MenuItem
+            onClick={handleDeleteModalOpen}
+            sx={{ display: "flex", gap: 1, alignItems: "center" }}
+          >
+            <Box
+              component="div"
+              sx={{
+                display: "flex",
+                gap: 1.5,
+                alignItems: "center",
+              }}
+            >
+              <MdDelete />
+              <Typography>Delete Post</Typography>
+            </Box>
+          </MenuItem>
+        </Menu>
+
+        <Modal open={deleteModalOpen} onClose={handleDeleteModalClose}>
+          <Paper elevation={0}  sx={style}>
+            <Typography>Are you sure to delete the post?</Typography>
+            <Box
+              component="div"
+              sx={{ display: "flex", alignItems: "center",justifyContent:'space-around' }}
+            >
+              <Button variant="contained" color="success" onClick={deletePostHandler}>Yes</Button>
+              <Button variant="contained" color="error" onClick={handleDeleteModalClose}>Cancel</Button>
+            </Box>
+          </Paper>
+        </Modal>
+
         <Box
           component="div"
           sx={{
@@ -233,6 +349,7 @@ const Post: React.FC<PostProps> = React.memo(
             >
               {comments.map((comment: IComments, key: any) => (
                 <Box
+                  key={key}
                   component="div"
                   sx={{
                     display: "flex",

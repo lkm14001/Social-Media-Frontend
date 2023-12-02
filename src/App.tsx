@@ -57,7 +57,7 @@ const App = () => {
     async (config) => {
       const response = refreshToken();
       if ((await response).data.success === true) {
-        // console.log("REFRESH TOKEN VALID");
+        console.log("REFRESH TOKEN VALID");
         config.withCredentials = true;
       } else {
         dispatch(logoutAsync()).then((res) => {
@@ -70,7 +70,7 @@ const App = () => {
       return config;
     },
     (error) => {
-      return Promise.reject(error);
+      return console.log(error)
     }
   );
 

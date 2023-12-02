@@ -11,7 +11,7 @@ export const checkAuthAPI = () => {
       )
       .then((res) => {
         if (res.status === 200) {
-          axios
+          axiosAuthInstance
             .get(
               `${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_PROFILE}/get-updated-details`,
               { withCredentials: true }
@@ -21,13 +21,15 @@ export const checkAuthAPI = () => {
             })
             .catch((error) => {
               // console.log("IN", error);
-              reject(new Error(error.response.data.error));
+              reject(new Error(error.response?.data?.error));
             });
         }
       })
       .catch((error) => {
         // console.log("OUT", error);
-        reject(new Error(error.response.data.error));
+        reject(
+          new Error(error.response?.data?.error) || new Error(error).message
+        );
       });
   });
 };
@@ -169,6 +171,23 @@ export const editPostAPI = (email: string, postId: string, post: any) => {
       })
       .catch((error) => {
         reject(new Error(error.response.data.error));
+      });
+  });
+};
+
+export const deletePostAPI = (userId: string, postId: string) => {
+  return new Promise<any>((resolve, reject) => {
+    axiosAuthInstance
+      .post(
+        `${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_PROFILE}/${userId}${process.env.REACT_APP_DELETE_POST}/${postId}`
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          resolve("Deleted Successfully!");
+        }
+      })
+      .catch((error) => {
+        reject(new Error(error.response?.data?.error));
       });
   });
 };
