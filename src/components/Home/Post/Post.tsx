@@ -108,6 +108,7 @@ const Post: React.FC<PostProps> = React.memo(
       };
       dispatch(deletePostAsync(payload)).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
+          dispatch(getLoggedInUserDataAsync());
         }
       });
       //close menu
@@ -223,14 +224,30 @@ const Post: React.FC<PostProps> = React.memo(
         </Menu>
 
         <Modal open={deleteModalOpen} onClose={handleDeleteModalClose}>
-          <Paper elevation={0}  sx={style}>
+          <Paper elevation={0} sx={style}>
             <Typography>Are you sure to delete the post?</Typography>
             <Box
               component="div"
-              sx={{ display: "flex", alignItems: "center",justifyContent:'space-around' }}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-around",
+              }}
             >
-              <Button variant="contained" color="success" onClick={deletePostHandler}>Yes</Button>
-              <Button variant="contained" color="error" onClick={handleDeleteModalClose}>Cancel</Button>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={deletePostHandler}
+              >
+                Yes
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={handleDeleteModalClose}
+              >
+                Cancel
+              </Button>
             </Box>
           </Paper>
         </Modal>
@@ -348,44 +365,46 @@ const Post: React.FC<PostProps> = React.memo(
               }}
             >
               {comments.map((comment: IComments, key: any) => (
-                <Box
-                  key={key}
-                  component="div"
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 1,
-                    alignContent: "stretch",
-                  }}
-                >
+                <>
                   <Box
+                    key={key}
+                    component="div"
                     sx={{
-                      py: 1,
-                      px: 2,
-                      backgroundColor: "field.background",
-                      borderRadius: 2,
-                      gap: 1.3,
                       display: "flex",
                       flexDirection: "column",
+                      gap: 1,
+                      alignContent: "stretch",
                     }}
                   >
                     <Box
-                      component="div"
                       sx={{
+                        py: 1,
+                        px: 2,
+                        backgroundColor: "field.background",
+                        borderRadius: 2,
+                        gap: 1.3,
                         display: "flex",
-                        gap: 1,
-                        alignItems: "center",
+                        flexDirection: "column",
                       }}
                     >
-                      <Avatar
-                        src={comment.user?.profilePicture}
-                        sx={{ width: 30, height: 30 }}
-                      />
-                      <Typography>{comment.user?.username}</Typography>
+                      <Box
+                        component="div"
+                        sx={{
+                          display: "flex",
+                          gap: 1,
+                          alignItems: "center",
+                        }}
+                      >
+                        <Avatar
+                          src={comment.user?.profilePicture}
+                          sx={{ width: 30, height: 30 }}
+                        />
+                        <Typography>{comment.user?.username}</Typography>
+                      </Box>
+                      <Typography sx={{}}>{comment.comment}</Typography>
                     </Box>
-                    <Typography sx={{}}>{comment.comment}</Typography>
                   </Box>
-                </Box>
+                </>
               ))}
             </Box>
           )}

@@ -10,6 +10,7 @@ import {
 import React, { useState } from "react";
 import {
   IPosts,
+  IUser,
   sendFriendRequestAsync,
   userState,
 } from "../../../redux/slices/userSlice/userSlice";
@@ -26,6 +27,40 @@ const style = {
   boxShadow: 24,
   borderRadius: 4,
   // p: 3,
+};
+
+interface IPostModal {
+  postModalOpen: boolean;
+  setPostModalOpen: (value: React.SetStateAction<boolean>) => void;
+  post: IPosts;
+  user: IUser;
+}
+
+const PostModal = ({
+  postModalOpen,
+  setPostModalOpen,
+  post,
+  user,
+}: IPostModal) => {
+  return (
+    <>
+      <Modal open={postModalOpen} onClose={() => setPostModalOpen(false)}>
+        <Box sx={style}>
+          <Post
+            postId={post._id}
+            userId={user._id}
+            comments={post.comments}
+            content={post.content}
+            firstName={user.firstName}
+            image={post.image}
+            lastName={user.lastName}
+            profilePic={user.profilePicture}
+            username={user.username}
+          />
+        </Box>
+      </Modal>
+    </>
+  );
 };
 
 const Profile = () => {
@@ -46,6 +81,8 @@ const Profile = () => {
     };
     dispatch(sendFriendRequestAsync(payload));
   };
+
+  const [postModalData, setPostModalData] = useState<IPosts>({} as IPosts);
 
   return (
     <Paper
@@ -237,37 +274,23 @@ const Profile = () => {
         >
           {user.posts.length !== 0 ? (
             user.posts.map((post: IPosts, key: any) => (
-              <Box>
-                <Box
-                  component={"img"}
-                  src={post.image}
-                  sx={{
-                    height: "20vh",
-                    borderRadius: 4,
-                    cursor: "pointer",
-                  }}
-                  onClick={() => setPostModalOpen(true)}
-                />
-                <Modal
-                  open={postModalOpen}
-                  onClose={() => setPostModalOpen(false)}
-                >
-                  <Box sx={style}>
-                    <Post
-                      postId={post._id}
-                      userId={user._id}
-                      comments={post.comments}
-                      content={post.content}
-                      firstName={user.firstName}
-                      image={post.image}
-                      lastName={user.lastName}
-                      profilePic={user.profilePicture}
-                      username={user.username}
-                      key={key}
-                    />
-                  </Box>
-                </Modal>
-              </Box>
+              <>
+                <Box>
+                  <Box
+                    component={"img"}
+                    src={post.image}
+                    sx={{
+                      height: "20vh",
+                      borderRadius: 4,
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      setPostModalOpen(true);
+                      setPostModalData(post);
+                    }}
+                  />
+                </Box>
+              </>
             ))
           ) : (
             <>
@@ -286,6 +309,12 @@ const Profile = () => {
               )}
             </>
           )}
+          <PostModal
+            postModalOpen={postModalOpen}
+            setPostModalOpen={setPostModalOpen}
+            post={postModalData}
+            user={user}
+          />
         </Box>
       </Paper>
     </Paper>

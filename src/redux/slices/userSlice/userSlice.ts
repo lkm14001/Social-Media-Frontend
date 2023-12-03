@@ -397,6 +397,7 @@ const userSlice = createSlice({
       state.registerLoadingState = false;
     });
     builder.addCase(logoutAsync.fulfilled, (state, action) => {
+      state.loggedInUser = {} as IUser;
       state.action = { message: action.payload, type: "success" };
     });
     builder.addCase(searchUserAsync.pending, (state) => {
