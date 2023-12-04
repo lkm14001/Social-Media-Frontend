@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Button,
   IconButton,
   Paper,
   Typography,
@@ -38,6 +39,15 @@ const SearchList: React.FC<SearchListProps> = ({
         dispatch(getLoggedInUserDataAsync());
       }
     });
+  };
+
+  const isUserIncluded = (userList: IUser[], user: IUser) => {
+    for (let i = 0; i < userList.length; i++) {
+      if (userList[i]._id === user._id) {
+        return true;
+      }
+      return false;
+    }
   };
 
   const navigate = useNavigate();
@@ -124,9 +134,17 @@ const SearchList: React.FC<SearchListProps> = ({
               alignItems: "center",
             }}
           >
-            {loggedInUser.followers.includes(user) ? (
+            {isUserIncluded(loggedInUser.following, user) ? (
               <>
-                <IconButton>Request Sent!</IconButton>
+                {isUserIncluded(loggedInUser.followers, user) ? (
+                  <>
+                    <Button disabled>Friends</Button>
+                  </>
+                ) : (
+                  <>
+                    <Button disabled>Request Sent!</Button>
+                  </>
+                )}
               </>
             ) : (
               <IconButton onClick={() => sendFriendRequestHandler(user._id)}>

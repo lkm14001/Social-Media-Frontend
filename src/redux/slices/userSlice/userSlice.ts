@@ -354,7 +354,7 @@ const userSlice = createSlice({
     //   state.friendsPosts.map();
     // },
     clearState: (state) => {
-      state = initialState;
+      Object.assign(state, initialState);
       // localStorage.removeItem("persist:root");
     },
   },
@@ -397,8 +397,7 @@ const userSlice = createSlice({
       state.registerLoadingState = false;
     });
     builder.addCase(logoutAsync.fulfilled, (state, action) => {
-      state.loggedInUser = {} as IUser;
-      state.action = { message: action.payload, type: "success" };
+      Object.assign(state, initialState);
     });
     builder.addCase(searchUserAsync.pending, (state) => {
       state.searchLoading = true;

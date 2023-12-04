@@ -130,7 +130,7 @@ const Profile = () => {
           <Avatar
             alt="profile"
             src={user.profilePicture}
-            sx={{ width: "10rem", height: "10rem" }}
+            sx={{ width: "10rem", height: "10rem", alignSelf: "start" }}
           />
           <Box
             component="div"
@@ -250,46 +250,46 @@ const Profile = () => {
                 </Typography>
               </Box>
             </Box>
-            <Box
-              component="div"
-              sx={{
-                width: "100%",
-              }}
-            >
-              <Typography sx={{ fontSize: "2rem" }}>{user.bio}</Typography>
-            </Box>
           </Box>
+        </Box>
+        <Box
+          component="div"
+          sx={{
+            width: "100%",
+          }}
+        >
+          <Typography sx={{ fontSize: "2rem" }}>{user.bio}</Typography>
         </Box>
         <Divider />
         <Box
           component="div"
           sx={{
             display: "flex",
-            gap: 2.5,
-            flexWrap: "wrap",
-            "& > * ": {
-              flex: "0 1 25%",
+            gap: 2,
+
+            "& > *": {
+              flexGrow: 0,
+              flexShrink: 1,
             },
+            flexWrap: "wrap",
           }}
         >
           {user.posts.length !== 0 ? (
             user.posts.map((post: IPosts, key: any) => (
               <>
-                <Box>
-                  <Box
-                    component={"img"}
-                    src={post.image}
-                    sx={{
-                      height: "20vh",
-                      borderRadius: 4,
-                      cursor: "pointer",
-                    }}
-                    onClick={() => {
-                      setPostModalOpen(true);
-                      setPostModalData(post);
-                    }}
-                  />
-                </Box>
+                <Box
+                  component={"img"}
+                  src={post.image}
+                  sx={{
+                    height: "20vh",
+                    borderRadius: 4,
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    setPostModalOpen(true);
+                    setPostModalData(post);
+                  }}
+                />
               </>
             ))
           ) : (
