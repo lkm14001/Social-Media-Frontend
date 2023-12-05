@@ -289,6 +289,7 @@ const Profile = () => {
                     setPostModalOpen(true);
                     setPostModalData(post);
                   }}
+                  key={key}
                 />
               </>
             ))

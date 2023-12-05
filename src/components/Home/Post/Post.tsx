@@ -32,6 +32,7 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import EditPost from "./EditPost";
 
 interface PostProps {
   postId: string;
@@ -43,6 +44,13 @@ interface PostProps {
   image: string;
   content: string;
   userId: string;
+  // handlePostModalClose:() => void;
+}
+
+interface DeleteModalProps {
+  deleteModalOpen: boolean;
+  handleDeleteModalClose: () => void;
+  deletePostHandler: () => void;
 }
 
 const style = {
@@ -59,6 +67,45 @@ const style = {
   p: 4,
 };
 
+const DeleteModal = ({
+  deleteModalOpen,
+  handleDeleteModalClose,
+  deletePostHandler,
+}: DeleteModalProps) => {
+  return (
+    <>
+      <Modal open={deleteModalOpen} onClose={handleDeleteModalClose}>
+        <Paper elevation={0} sx={style}>
+          <Typography>Are you sure to delete the post?</Typography>
+          <Box
+            component="div"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-around",
+            }}
+          >
+            <Button
+              variant="contained"
+              color="success"
+              onClick={deletePostHandler}
+            >
+              Yes
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleDeleteModalClose}
+            >
+              Cancel
+            </Button>
+          </Box>
+        </Paper>
+      </Modal>
+    </>
+  );
+};
+
 const Post: React.FC<PostProps> = React.memo(
   ({
     postId,
@@ -70,11 +117,16 @@ const Post: React.FC<PostProps> = React.memo(
     comments,
     image,
     content,
+    // handlePostModalClose
   }) => {
     const dispatch = useAppDispatch();
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [editModalOpen, setEditModalOpen] = useState(false);
+
     const handleDeleteModalOpen = () => setDeleteModalOpen(true);
     const handleDeleteModalClose = () => setDeleteModalOpen(false);
+    const handleEditModalOpen = () => setEditModalOpen(true);
+    const handleEditModalClose = () => setEditModalOpen(false);
 
     const [commentOpen, setCommentOpen] = useState<boolean>(false);
     const [commentContent, setCommentContent] = useState<string>("");
@@ -95,7 +147,7 @@ const Post: React.FC<PostProps> = React.memo(
 
     const editPostHandler = () => {
       //open edit Modal
-
+      handleEditModalOpen();
       //close menu
       handlePostMenuClose();
     };
@@ -223,34 +275,22 @@ const Post: React.FC<PostProps> = React.memo(
           </MenuItem>
         </Menu>
 
-        <Modal open={deleteModalOpen} onClose={handleDeleteModalClose}>
-          <Paper elevation={0} sx={style}>
-            <Typography>Are you sure to delete the post?</Typography>
-            <Box
-              component="div"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-around",
-              }}
-            >
-              <Button
-                variant="contained"
-                color="success"
-                onClick={deletePostHandler}
-              >
-                Yes
-              </Button>
-              <Button
-                variant="contained"
-                color="error"
-                onClick={handleDeleteModalClose}
-              >
-                Cancel
-              </Button>
-            </Box>
-          </Paper>
+        <Modal open={editModalOpen} onClose={handleEditModalClose}>
+          <>
+            <EditPost
+              postContent={content}
+              postImage={image}
+              postId={postId}
+              handleEditModalClose={handleEditModalClose}
+            />
+          </>
         </Modal>
+
+        <DeleteModal
+          deleteModalOpen={deleteModalOpen}
+          deletePostHandler={deletePostHandler}
+          handleDeleteModalClose={handleDeleteModalClose}
+        />
 
         <Box
           component="div"

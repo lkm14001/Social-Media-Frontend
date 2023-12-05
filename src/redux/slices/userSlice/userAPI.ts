@@ -11,7 +11,7 @@ export const checkAuthAPI = () => {
       )
       .then((res) => {
         if (res.status === 200) {
-          axiosAuthInstance
+          axios
             .get(
               `${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_PROFILE}/get-updated-details`,
               { withCredentials: true }
