@@ -10,8 +10,6 @@ import {
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import React, { useRef, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
-
-import { v4 as uuidv4 } from "uuid";
 import { storage } from "../../../config/firebase-config";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import {
