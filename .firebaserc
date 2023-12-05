@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "social-media-b1274"
-  }
+  },
+  "targets": {
+    "social-media-b1274": {
+      "hosting": {
+        "socializemedia.web.app": [
+          "socialize"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
