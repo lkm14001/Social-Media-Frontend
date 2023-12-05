@@ -3,7 +3,7 @@
     "default": "social-media-b1274"
   },
   "targets": {
-    "social-media-b1274": {
+    "socializemedia": {
       "hosting": {
         "socializemedia.web.app": [
           "socialize"
