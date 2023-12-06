@@ -15,7 +15,6 @@ jobs:
       - name: Build
         env:
           CI: false
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
           REACT_APP_USER_LOGIN: ${{ secrets.REACT_APP_USER_LOGIN }}
           REACT_APP_USER_REGISTER: ${{ secrets.REACT_APP_USER_REGISTER }}
@@ -68,3 +67,5 @@ jobs:
         uses: w9jds/firebase-action@master
         with:
           args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
