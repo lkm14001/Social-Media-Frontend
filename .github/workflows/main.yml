@@ -13,31 +13,14 @@ jobs:
       - name: Install Dependencies
         run: npm install
       - name: Build
-        env:
-          CI: false
         run: npm run build
       - name: Archive Production Artifact
         uses: actions/upload-artifact@v2
         with:
           name: build
           path: build
-  deploy:
-    name: Deploy
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2.3.2
-      - name: Download Artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: build
-          path: build
-      - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy --only hosting
         env:
+          CI: false
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
           REACT_APP_USER_LOGIN: ${{ secrets.REACT_APP_USER_LOGIN }}
@@ -69,3 +52,19 @@ jobs:
 
           REACT_APP_FIREBASE_STORAGE_ROOT: ${{ secrets.REACT_APP_FIREBASE_STORAGE_ROOT }}
           REACT_APP_FIREBASE_STORAGE_POSTS: ${{ secrets.REACT_APP_FIREBASE_STORAGE_POSTS }}
+          args: deploy --only hosting
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2.3.2
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: build
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
