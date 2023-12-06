@@ -15,7 +15,7 @@ const FirendsList = () => {
   return (
     <Paper
       elevation={0}
-      sx={{
+      sx={(theme) => ({
         width: "18%",
         p: 3,
         display: "flex",
@@ -32,7 +32,10 @@ const FirendsList = () => {
         scrollbarWidth: "none",
         borderRadius: 4,
         backgroundColor: "background.widget",
-      }}
+        [theme.breakpoints.down('lg')]:{
+          display:'none'
+        }
+      })}
     >
       <Typography
         sx={{

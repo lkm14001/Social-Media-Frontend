@@ -27,6 +27,16 @@ declare module "@mui/material/styles" {
     mode: string;
     widget?: string;
   }
+
+  interface BreakpointOverrides {
+    xs: true; // removes the `xs` breakpoint
+    sm: true;
+    md: true;
+    lg: true;
+    xl: true;
+    ipad?:true;
+  }
+  
   // interface TypographyStyleOptions{
   //   color:string;
   // }
@@ -85,6 +95,16 @@ export const getDesignTokens = (mode: PaletteMode) => {
         color: mode === "dark" ? "#999999" : "#606060",
       },
     },
+    breakpoints:{
+      values:{
+        xs:0,
+        sm:600,
+        md:1200,
+        ipad:920,
+        lg:1500,
+        xl:1800
+      }
+    },
     components: {
       MuiCssBaseline: {
         styleOverrides: {
@@ -120,7 +140,7 @@ export const getDesignTokens = (mode: PaletteMode) => {
       MuiButton: {
         variants: [
           {
-            props: { variant: "postButton",size:'large' },
+            props: { variant: "postButton" },
             style: {
               backgroundColor: mode === 'dark' ? "#0f0f11" : "#f0f0f0",
               color: mode === 'dark' ? "#ffffff" : "#323648",

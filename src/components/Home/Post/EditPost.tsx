@@ -6,6 +6,8 @@ import {
   Paper,
   Snackbar,
   TextField,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import React, { useRef, useState } from "react";
@@ -34,16 +36,25 @@ const style = {
   boxShadow: 24,
   gap: 2,
   p: 4,
+  borderRadius:4
 };
 
 interface EditPostProps {
   postContent: string;
   postImage: string;
-  postId:string;
-  handleEditModalClose:() => void;
+  postId: string;
+  handleEditModalClose: () => void;
 }
 
-const EditPost = ({ postContent, postImage,postId,handleEditModalClose }: EditPostProps) => {
+const EditPost = ({
+  postContent,
+  postImage,
+  postId,
+  handleEditModalClose,
+}: EditPostProps) => {
+  const theme = useTheme();
+  const mdSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   const dispatch = useAppDispatch();
   const loggedInUser = useAppSelector(userState).loggedInUser;
   const [newPostContent, setNewPostContent] = useState<string>(postContent);
@@ -102,7 +113,7 @@ const EditPost = ({ postContent, postImage,postId,handleEditModalClose }: EditPo
       getDownloadURL(picRef).then((url) => {
         const newPostData = {
           email: loggedInUser.email,
-          postId:postId,
+          postId: postId,
           post: {
             content: newPostContent,
             image: url,
@@ -117,8 +128,8 @@ const EditPost = ({ postContent, postImage,postId,handleEditModalClose }: EditPo
             setPreview("");
             setNewPostContent("");
             dispatch(getLoggedInUserDataAsync());
-            dispatch(getuserAsync(loggedInUser._id))
-            handleEditModalClose()
+            dispatch(getuserAsync(loggedInUser._id));
+            handleEditModalClose();
           } else {
             setAction({ message: res.payload, type: "error" });
           }
@@ -128,7 +139,17 @@ const EditPost = ({ postContent, postImage,postId,handleEditModalClose }: EditPo
   };
   return (
     <>
-      <Paper elevation={0} sx={style}>
+      <Paper
+        elevation={0}
+        sx={(theme) => ({
+          ...style,
+          [theme.breakpoints.down("sm")]: {
+            width: "80vw",
+            height: "min-content",
+            p: 2.5,
+          },
+        })}
+      >
         <Box
           component={"div"}
           sx={{
@@ -199,21 +220,35 @@ const EditPost = ({ postContent, postImage,postId,handleEditModalClose }: EditPo
           />
           <Box
             component="div"
-            sx={{
+            sx={(theme) => ({
               display: "flex",
-              justifyContent: "flex-end",
               width: "100%",
-              flexWrap: "wrap",
               gap: 2.5,
-            }}
+              flexWrap: "wrap",
+              [theme.breakpoints.up("sm")]: {
+                justifyContent: "flex-end",
+              },
+              [theme.breakpoints.down("sm")]: {
+                gap: 1.5,
+              },
+              "& > *": {
+                flexShrink: 1,
+              },
+            })}
           >
             <Button
               startIcon={<MdPhotoSizeSelectActual />}
-              size="large"
-              sx={{
+              size={mdSmallScreen ? "small" : "large"}
+              sx={(theme) => ({
+                [theme.breakpoints.down("sm")]: {
+                  px: 2,
+                },
                 px: 5,
                 borderRadius: 10,
-              }}
+                "& > *": {
+                  flexShrink: 1,
+                },
+              })}
               variant="postButton"
               onClick={imageSelectHandler}
             >
@@ -221,31 +256,40 @@ const EditPost = ({ postContent, postImage,postId,handleEditModalClose }: EditPo
             </Button>
             <Button
               startIcon={<IoVideocam />}
-              size="large"
-              sx={{
+              size={mdSmallScreen ? "small" : "large"}
+              sx={(theme) => ({
+                [theme.breakpoints.down("sm")]: {
+                  px: 2,
+                },
                 px: 5,
                 borderRadius: 10,
-              }}
+              })}
               variant="postButton"
             >
               Video
             </Button>
             <Button
               startIcon={<FaSquarePollVertical />}
-              size="large"
-              sx={{
+              size={mdSmallScreen ? "small" : "large"}
+              sx={(theme) => ({
+                [theme.breakpoints.down("sm")]: {
+                  px: 2,
+                },
                 px: 5,
                 borderRadius: 10,
-              }}
+              })}
               variant="postButton"
             >
               Poll
             </Button>
             <Button
-              sx={{
+              sx={(theme) => ({
+                [theme.breakpoints.down("sm")]: {
+                  px: 2,
+                },
                 px: 5,
                 borderRadius: 10,
-              }}
+              })}
               size="large"
               variant="postButton"
               startIcon={<MdPublish />}

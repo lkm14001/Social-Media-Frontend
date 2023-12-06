@@ -75,7 +75,16 @@ const DeleteModal = ({
   return (
     <>
       <Modal open={deleteModalOpen} onClose={handleDeleteModalClose}>
-        <Paper elevation={0} sx={style}>
+        <Paper
+          elevation={0}
+          sx={(theme) => ({
+            ...style,
+            [theme.breakpoints.down("sm")]: {
+              width: "90vw",
+              height: "18vh",
+            },
+          })}
+        >
           <Typography>Are you sure to delete the post?</Typography>
           <Box
             component="div"
@@ -196,7 +205,7 @@ const Post: React.FC<PostProps> = React.memo(
     return (
       <Paper
         elevation={0}
-        sx={{
+        sx={(theme) => ({
           backgroundColor: "background.widget",
           display: "flex",
           flexDirection: "column",
@@ -208,9 +217,9 @@ const Post: React.FC<PostProps> = React.memo(
           },
           borderRadius: 4,
           scrollbarWidth: "none",
-          maxHeight: "70vh",
+          maxHeight: "80vh",
           position: "relative",
-        }}
+        })}
       >
         {userId === loggedInUser._id && (
           <>
@@ -308,21 +317,28 @@ const Post: React.FC<PostProps> = React.memo(
         >
           <Box
             component="div"
-            sx={{
+            sx={(theme) => ({
               display: "flex",
               //flexDirection: "column",
               alignItems: "center",
               gap: 5,
-            }}
+              [theme.breakpoints.down("sm")]: {
+                gap: 2,
+              },
+            })}
           >
             <Avatar
               alt="Profile"
               src={profilePic}
-              sx={{
+              sx={(theme) => ({
                 width: 100,
                 height: 100,
                 alignSelf: "center",
-              }}
+                [theme.breakpoints.down('sm')]:{
+                  width:65,
+                  height:65,
+                }
+              })}
             />
             <Box
               sx={{
@@ -334,12 +350,15 @@ const Post: React.FC<PostProps> = React.memo(
               }}
             >
               <Typography
-                sx={{
+                sx={(theme) => ({
                   fontSize: "2rem",
+                  [theme.breakpoints.down("sm")]: {
+                    fontSize: "1.6rem",
+                  },
                   fontWeight: "bold",
                   mb: -1,
                   alignSelf: "center",
-                }}
+                })}
               >
                 {firstName + " " + lastName}
               </Typography>
@@ -355,22 +374,29 @@ const Post: React.FC<PostProps> = React.memo(
             </Box>
           </Box>
           <Typography
-            sx={{
+            sx={(theme) => ({
               fontSize: "1.3rem",
-            }}
+              [theme.breakpoints.down("sm")]: {
+                fontSize: "1rem",
+              },
+            })}
           >
             {content}
           </Typography>
           <Box
             component="img"
-            sx={{
+            sx={(theme) => ({
               width: "100%",
               minWidth: "100%",
               minHeight: "15rem",
               maxHeight: "25rem",
+              [theme.breakpoints.down("sm")]: {
+                minHeight: "10rem",
+                maxHeight: "20rem",
+              },
               borderRadius: 5,
               // objectFit:'fill'
-            }}
+            })}
             src={image}
           />
           <Box
@@ -460,7 +486,14 @@ const Post: React.FC<PostProps> = React.memo(
           }}
         >
           <Avatar
-            sx={{ width: 60, height: 60 }}
+            sx={(theme) => ({
+              width: 60,
+              height: 60,
+              [theme.breakpoints.down("sm")]: {
+                width: 45,
+                height: 45,
+              },
+            })}
             src={loggedInUser.profilePicture}
           />
           <TextField
@@ -471,14 +504,17 @@ const Post: React.FC<PostProps> = React.memo(
             onKeyDown={commentSubmitHandler}
             placeholder="Write your comment...!"
             InputProps={{
-              sx: {
+              sx: (theme) => ({
                 borderRadius: 10,
+                [theme.breakpoints.down("sm")]: {
+                  height: 40,
+                },
                 backgroundColor: "field.background",
                 "& fieldset": {
                   outline: 0,
                   border: 0,
                 },
-              },
+              }),
               endAdornment: (
                 <Box
                   component="div"

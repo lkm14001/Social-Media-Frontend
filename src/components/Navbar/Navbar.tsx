@@ -43,6 +43,7 @@ const style = {
 };
 
 const Navbar = () => {
+
   const dispatch = useAppDispatch();
   const [search, setSearch] = useState<string>("");
   const navigate = useNavigate();
@@ -115,31 +116,41 @@ const Navbar = () => {
       elevation={0}
       square
       component="div"
-      sx={{
+      sx={(theme) => ({
         height: "10vh",
         width: "100%",
         display: "flex",
         justifyContent: "space-between",
+        [theme.breakpoints.down("ipad")]: {
+          px: 2,
+        },
         px: 5,
-        flexWrap: "wrap",
+        // flexWrap: "wrap",
         alignItems: "center",
         backgroundColor: "background.widget",
-      }}
+        "& > *": {
+          flexShrink: 1,
+        },
+      })}
     >
       <Box
         component="div"
-        sx={{
+        sx={(theme) => ({
           display: "flex",
           justifyContent: "space-between",
+          [theme.breakpoints.down("md")]: {
+            gap: 2,
+          },
           gap: 5,
           alignItems: "center",
           // border:'1px solid white'
-        }}
+        })}
       >
         <Box
           component={"div"}
           sx={(theme) => ({
             cursor: "pointer",
+            width: "max-content",
           })}
           onClick={() => {
             dispatch(getLoggedInUserDataAsync());
@@ -147,12 +158,16 @@ const Navbar = () => {
           }}
         >
           <Typography
-            sx={{
-              fontSize: "3rem",
-              fontWeight: "bolder",
-              letterSpacing: "-4px",
+            sx={(theme) => ({
+              [theme.breakpoints.down("sm")]: {
+                fontSize: "8vw",
+                letterSpacing:'0px'
+              },
+              fontSize:'2.5rem',
+              // fontWeight: "bolder",
+              letterSpacing: "-2px",
               fontFamily: "Agbalumo",
-            }}
+            })}
           >
             Social Media
           </Typography>
@@ -167,14 +182,17 @@ const Navbar = () => {
           onKeyDown={handleSearch}
           variant="outlined"
           InputProps={{
-            sx: {
+            sx: (theme) => ({
               borderRadius: 10,
+              [theme.breakpoints.down("sm")]: {
+                width: "min-content",
+              },
               backgroundColor: "field.background",
               "& fieldset": {
                 outline: 0,
                 border: 0,
               },
-            },
+            }),
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton
@@ -190,7 +208,12 @@ const Navbar = () => {
           }}
         />
         <Modal open={searchModalOpen} onClose={() => setSearchModalOpen(false)}>
-          <Box sx={style}>
+          <Box sx={(theme) => ({
+            ...style,
+            [theme.breakpoints.down('sm')]:{
+              
+            }
+          })}>
             <SearchList
               searchList={searchList}
               setModalOpen={setSearchModalOpen}
@@ -206,42 +229,63 @@ const Navbar = () => {
           gap: 3,
         }}
       >
-        <Badge badgeContent={5} color="error" overlap="circular">
-          <IconButton
-            // onClick={toggleDarkMode}
-            sx={{
-              width: 50,
-              height: 50,
-            }}
-          >
-            <LuMessageSquare />
-          </IconButton>
-        </Badge>
-        <Badge
-          badgeContent={friendRequests.length}
-          color="error"
-          overlap="circular"
+        <Box
+          component="div"
+          sx={(theme) => ({
+            [theme.breakpoints.down("ipad")]: {
+              display: "none",
+            },
+          })}
         >
-          <IconButton
-            onClick={handleFriendRequestsAnchor}
-            sx={{
-              width: 50,
-              height: 50,
-            }}
+          <Badge badgeContent={5} color="error" overlap="circular">
+            <IconButton
+              // onClick={toggleDarkMode}
+              sx={(theme) => ({
+                width: 50,
+                height: 50,
+              })}
+            >
+              <LuMessageSquare />
+            </IconButton>
+          </Badge>
+        </Box>
+        <Box
+          component="div"
+          sx={(theme) => ({
+            [theme.breakpoints.down("ipad")]: {
+              display: "none",
+            },
+          })}
+        >
+          <Badge
+            badgeContent={friendRequests.length}
+            color="error"
+            overlap="circular"
           >
-            <FaUserFriends />
-          </IconButton>
-        </Badge>
+            <IconButton
+              onClick={handleFriendRequestsAnchor}
+              sx={{
+                width: 50,
+                height: 50,
+              }}
+            >
+              <FaUserFriends />
+            </IconButton>
+          </Badge>
+        </Box>
         <FriendRequests
           anchor={friendRequestsAnchor}
           setAnchorClose={handleRequestsClose}
         />
         <IconButton
           onClick={toggleDarkMode}
-          sx={{
+          sx={(theme) => ({
             width: 50,
             height: 50,
-          }}
+            [theme.breakpoints.down("ipad")]: {
+              display: "none",
+            },
+          })}
         >
           {darkMode ? <MdDarkMode /> : <MdOutlineLightMode />}
         </IconButton>
@@ -269,6 +313,75 @@ const Navbar = () => {
             >
               <MdAccountCircle />
               <Typography>Profile</Typography>
+            </Box>
+          </MenuItem>
+
+          <MenuItem
+            sx={(theme) => ({
+              [theme.breakpoints.up("ipad")]: {
+                display: "none",
+              },
+            })}
+          >
+            <Box
+              component="div"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 2,
+              }}
+            >
+              <Badge
+                badgeContent={friendRequests.length}
+                color="error"
+                overlap="circular"
+              >
+                <FaUserFriends />
+              </Badge>
+              <Typography>Friend Requests</Typography>
+            </Box>
+          </MenuItem>
+
+          <MenuItem
+            sx={(theme) => ({
+              [theme.breakpoints.up("ipad")]: {
+                display: "none",
+              },
+            })}
+          >
+            <Box
+              component="div"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 2,
+              }}
+            >
+              <Badge badgeContent={5} color="error">
+                <LuMessageSquare />
+              </Badge>
+              <Typography>Messages</Typography>
+            </Box>
+          </MenuItem>
+
+          <MenuItem
+            sx={(theme) => ({
+              [theme.breakpoints.up("ipad")]: {
+                display: "none",
+              },
+            })}
+            onClick={toggleDarkMode}
+          >
+            <Box
+              component="div"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 2,
+              }}
+            >
+              {darkMode ? <MdDarkMode /> : <MdOutlineLightMode />}
+              <Typography>{darkMode ? "Dark Mode" : "Light Mode"}</Typography>
             </Box>
           </MenuItem>
 

@@ -15,7 +15,7 @@ const Bio = () => {
     <Paper
       elevation={0}
       square
-      sx={{
+      sx={(theme) => ({
         display: "flex",
         flexDirection: "column",
         gap: 2.5,
@@ -26,7 +26,10 @@ const Bio = () => {
         height: "min-content",
         justifySelf: "start",
         // flexBasis:"20%"
-      }}
+        [theme.breakpoints.down("md")]: {
+          display: "none",
+        },
+      })}
     >
       <Box
         component="div"

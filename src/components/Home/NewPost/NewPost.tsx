@@ -6,6 +6,8 @@ import {
   TextField,
   IconButton,
   Snackbar,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import React, { useRef, useState } from "react";
@@ -33,6 +35,9 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 const NewPost = () => {
+  const theme = useTheme();
+
+  const mdSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const dispatch = useAppDispatch();
   const loggedInUser = useAppSelector(userState).loggedInUser;
 
@@ -224,16 +229,22 @@ const NewPost = () => {
               justifyContent: "flex-end",
               width: "100%",
               flexWrap: "wrap",
+              "& > *": {
+                flexShrink: 1,
+              },
               gap: 2.5,
             }}
           >
             <Button
               startIcon={<MdPhotoSizeSelectActual />}
-              size="large"
-              sx={{
-                px: 5,
+              size={mdSmallScreen ? "small" : "large"}
+              sx={(theme) => ({
+                [theme.breakpoints.down("sm")]: {
+                  px: 2,
+                },
+                px:5,
                 borderRadius: 10,
-              }}
+              })}
               variant="postButton"
               onClick={imageSelectHandler}
             >
@@ -241,32 +252,41 @@ const NewPost = () => {
             </Button>
             <Button
               startIcon={<IoVideocam />}
-              size="large"
-              sx={{
-                px: 5,
+              size={mdSmallScreen ? "small" : "large"}
+              sx={(theme) => ({
+                [theme.breakpoints.down("sm")]: {
+                  px: 2,
+                },
+                px:5,
                 borderRadius: 10,
-              }}
+              })}
               variant="postButton"
             >
               Video
             </Button>
             <Button
               startIcon={<FaSquarePollVertical />}
-              size="large"
-              sx={{
-                px: 5,
+              size={mdSmallScreen ? "small" : "large"}
+              sx={(theme) => ({
+                [theme.breakpoints.down("sm")]: {
+                  px: 2,
+                },
+                px:5,
                 borderRadius: 10,
-              }}
+              })}
               variant="postButton"
             >
               Poll
             </Button>
             <Button
-              sx={{
-                px: 5,
+              sx={(theme) => ({
+                [theme.breakpoints.down("sm")]: {
+                  px: 2,
+                },
+                px:5,
                 borderRadius: 10,
-              }}
-              size="large"
+              })}
+              size={mdSmallScreen ? "small" : "large"}
               variant="postButton"
               startIcon={<MdPublish />}
               onClick={publishPost}

@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { IoPersonAddSharp } from "react-icons/io5";
+import { TiTick } from "react-icons/ti";
 import { useNavigate } from "react-router-dom";
 import {
   IUser,
@@ -55,23 +56,33 @@ const SearchList: React.FC<SearchListProps> = ({
   return (
     <Paper
       elevation={0}
-      sx={{
+      sx={(theme) => ({
         display: "flex",
         flexDirection: "column",
         gap: 2,
         p: 3,
         borderRadius: 4,
-      }}
+        width:'25vw',
+        [theme.breakpoints.down('md')]:{
+          width:'35vw',
+        },
+        [theme.breakpoints.down('ipad')]:{
+          width:'40vw'
+        },
+        [theme.breakpoints.down("sm")]: {
+          width: "65vw",
+        },
+      })}
     >
       {searchList.map((user: IUser, key: any) => (
         <Box
           component="div"
-          sx={{
+          sx={(theme) => ({
             display: "flex",
             alignItems: "center",
             width: "100%",
-            gap: 3.5,
-          }}
+            justifyContent:'space-between'
+          })}
           key={key}
         >
           <Box
@@ -79,7 +90,7 @@ const SearchList: React.FC<SearchListProps> = ({
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "space-around",
+              // justifyContent: "space-around",
               //   p: 3,
               width: "100%",
               gap: 2,
@@ -138,7 +149,9 @@ const SearchList: React.FC<SearchListProps> = ({
               <>
                 {isUserIncluded(loggedInUser.followers, user) ? (
                   <>
-                    <Button disabled>Friends</Button>
+                    <IconButton disabled>
+                      <TiTick />
+                    </IconButton>
                   </>
                 ) : (
                   <>

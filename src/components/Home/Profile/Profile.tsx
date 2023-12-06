@@ -45,7 +45,12 @@ const PostModal = ({
   return (
     <>
       <Modal open={postModalOpen} onClose={() => setPostModalOpen(false)}>
-        <Box sx={style}>
+        <Box sx={(theme) => ({
+          ...style,
+          [theme.breakpoints.down('sm')]:{
+            width:'80vw'
+          }
+        })}>
           <Post
             postId={post._id}
             userId={user._id}
@@ -87,18 +92,21 @@ const Profile = () => {
   return (
     <Paper
       elevation={0}
-      sx={{
+      sx={(theme) => ({
         backgroundColor: "background.mode",
         minHeight: "90vh",
         display: "flex",
         gap: 2,
         p: 5,
-      }}
+        [theme.breakpoints.down("sm")]: {
+          p: 3,
+        },
+      })}
     >
       <Paper
         elevation={0}
         component="div"
-        sx={{
+        sx={(theme) => ({
           display: "flex",
           flexDirection: "column",
           // border:'1px solid ',
@@ -116,7 +124,13 @@ const Profile = () => {
             display: "none",
           },
           scrollbarWidth: "none",
-        }}
+          "& > *": {
+            flexShrink: 1,
+          },
+          [theme.breakpoints.down('sm')]:{
+            p:3
+          }
+        })}
       >
         <Box
           component="div"
@@ -130,25 +144,46 @@ const Profile = () => {
           <Avatar
             alt="profile"
             src={user.profilePicture}
-            sx={{ width: "10rem", height: "10rem", alignSelf: "start" }}
+            sx={(theme) => ({
+              width: "10rem",
+              height: "10rem",
+              [theme.breakpoints.down('ipad')]:{
+                width:'7.5rem',
+                height:'7.5rem'
+              },
+              [theme.breakpoints.down("sm")]: {
+                width: "5rem",
+                height: "5rem",
+              },
+              alignSelf: "start",
+            })}
           />
           <Box
             component="div"
             sx={{
               display: "flex",
               flexDirection: "column",
-              gap: 2,
+              alignItems:'start',
+              gap: 4,
               flexGrow: 1,
             }}
           >
             <Box
               component="div"
-              sx={{
+              sx={(theme) => ({
                 display: "flex",
                 // justifyContent: "",
+
                 gap: 10,
                 alignItems: "center",
-              }}
+                [theme.breakpoints.down('ipad')]:{
+                  gap:5,
+                },
+                [theme.breakpoints.down('sm')]:{
+                  gap:4,
+                  flexDirection:'column'
+                }
+              })}
             >
               <Box
                 component="div"
@@ -158,15 +193,36 @@ const Profile = () => {
                 }}
               >
                 <Typography
-                  sx={{
+                  sx={(theme) => ({
                     fontFamily: "Agbalumo",
                     fontSize: "3rem",
+                    [theme.breakpoints.down('ipad')]:{
+                      fontSize:'2rem'
+                    },
+                    [theme.breakpoints.down("sm")]: {
+                      fontSize: "1.8rem",
+                    },
                     mb: -2,
-                  }}
+                  })}
                 >
                   {user.firstName + " " + user.lastName}
                 </Typography>
-                <Typography>{"@" + user.username}</Typography>
+                <Typography
+                  sx={(theme) => ({
+                    fontFamily: "Agbalumo",
+                    fontSize: "1.8rem",
+                    color: "grey",
+                    [theme.breakpoints.down('ipad')]:{
+                      fontSize:'1.4rem'
+                    },
+                    [theme.breakpoints.down("sm")]: {
+                      fontSize: "1.1rem",
+                    },
+                    mb: -2,
+                  })}
+                >
+                  {"@" + user.username}
+                </Typography>
               </Box>
               {user._id === loggedInUser._id ? (
                 <></>
@@ -175,11 +231,19 @@ const Profile = () => {
                   <Button
                     variant="postButton"
                     startIcon={<FiUserPlus />}
-                    size="large"
-                    sx={{
+                    sx={(theme) => ({
+                      borderRadius:3,
                       px: 5,
                       py: 2,
-                    }}
+                      [theme.breakpoints.down('ipad')]:{
+                        px:3,
+                        py:1
+                      },
+                      // [theme.breakpoints.down('sm')]:{
+                      //   px:1.5,
+                      //   py:1
+                      // }
+                    })}
                     onClick={sendFriendRequestHandler}
                   >
                     Follow
@@ -204,20 +268,24 @@ const Profile = () => {
                 }}
               >
                 <Typography
-                  sx={{
+                  sx={(theme) => ({
                     fontFamily: "Agbalumo",
-                    fontSize: "1.2rem",
-                    fontWeight: "bolder",
-                  }}
+                    fontSize: "1.4rem",
+                    [theme.breakpoints.down("sm")]: {
+                      fontSize: "1rem",
+                    },
+                  })}
                 >
                   Followers
                 </Typography>
                 <Typography
-                  sx={{
+                  sx={(theme) => ({
                     fontFamily: "Agbalumo",
-                    fontSize: "1.2rem",
-                    fontWeight: "bolder",
-                  }}
+                    fontSize: "1.4rem",
+                    [theme.breakpoints.down("sm")]: {
+                      fontSize: "1rem",
+                    },
+                  })}
                 >
                   {user.followers ? user.followers.length : 0}
                 </Typography>
@@ -231,20 +299,24 @@ const Profile = () => {
                 }}
               >
                 <Typography
-                  sx={{
+                  sx={(theme) => ({
                     fontFamily: "Agbalumo",
-                    fontSize: "1.2rem",
-                    fontWeight: "bolder",
-                  }}
+                    fontSize: "1.4rem",
+                    [theme.breakpoints.down("sm")]: {
+                      fontSize: "1rem",
+                    },
+                  })}
                 >
                   Following
                 </Typography>
                 <Typography
-                  sx={{
+                  sx={(theme) => ({
                     fontFamily: "Agbalumo",
-                    fontSize: "1.2rem",
-                    fontWeight: "bolder",
-                  }}
+                    fontSize: "1.4rem",
+                    [theme.breakpoints.down("sm")]: {
+                      fontSize: "1rem",
+                    },
+                  })}
                 >
                   {user.following ? user.following.length : 0}
                 </Typography>
@@ -258,21 +330,34 @@ const Profile = () => {
             width: "100%",
           }}
         >
-          <Typography sx={{ fontSize: "2rem" }}>{user.bio}</Typography>
+          <Typography
+            sx={(theme) => ({
+              fontFamily: "Agbalumo",
+              fontSize: "2rem",
+              color:'grey',
+              [theme.breakpoints.down("sm")]: {
+                fontSize: "1.5rem",
+              },
+            })}
+          >
+            {user.bio}
+          </Typography>
         </Box>
         <Divider />
         <Box
           component="div"
-          sx={{
+          sx={(theme) => ({
             display: "flex",
             gap: 2,
-
+            [theme.breakpoints.down('sm')]:{
+              justifyContent:'center'
+            },
             "& > *": {
               flexGrow: 0,
               flexShrink: 1,
             },
             flexWrap: "wrap",
-          }}
+          })}
         >
           {user.posts.length !== 0 ? (
             user.posts.map((post: IPosts, key: any) => (
@@ -280,11 +365,22 @@ const Profile = () => {
                 <Box
                   component={"img"}
                   src={post.image}
-                  sx={{
+                  sx={(theme) => ({
                     height: "20vh",
+                    [theme.breakpoints.down('lg')]:{
+                      width:'25vw'
+                    },
+                    // [theme.breakpoints.down('ipad')]:{
+                    //   width:'30vw'
+                    // },
+                    [theme.breakpoints.down('sm')]:{
+                      height:'16vh',
+                      width:'65vw',
+                    },
+                    width:'20vw',
                     borderRadius: 4,
                     cursor: "pointer",
-                  }}
+                  })}
                   onClick={() => {
                     setPostModalOpen(true);
                     setPostModalData(post);
