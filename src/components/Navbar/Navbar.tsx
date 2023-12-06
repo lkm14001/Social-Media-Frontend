@@ -99,7 +99,7 @@ const Navbar = () => {
   const profileNavigationHandler = () => {
     handleCloseProfileMenu();
     dispatch(getuserAsync(loggedInUser._id)).then(() =>
-      navigate(`/profile${loggedInUser._id}`)
+      navigate(`/profile/${loggedInUser._id}`)
     );
   };
 
@@ -211,7 +211,7 @@ const Navbar = () => {
           <Box sx={(theme) => ({
             ...style,
             [theme.breakpoints.down('sm')]:{
-              
+
             }
           })}>
             <SearchList

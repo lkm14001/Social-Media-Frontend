@@ -66,7 +66,7 @@ const Login = () => {
     <>
       <Paper elevation={0} square
         component="div"
-        sx={{
+        sx={(theme) => ({
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -74,11 +74,11 @@ const Login = () => {
           width: "100vw",
           boxSizing: "border-box",
           backgroundColor: "background.mode",
-        }}
+        })}
       >
         <Paper
           component="div"
-          sx={{
+          sx={(theme) => ({
             width: "30%",
             minHeight: "70%",
             boxSizing: "border-box",
@@ -89,7 +89,20 @@ const Login = () => {
             // backgroundColor: "white",
             px: 5,
             py: 5,
-          }}
+            [theme.breakpoints.down('lg')]:{
+              width:'40%'
+            },
+            [theme.breakpoints.down('md')]:{
+              width:'50%'
+            },
+            [theme.breakpoints.down('ipad')]:{
+              width:'60%'
+            },
+            [theme.breakpoints.down('sm')]:{
+              px:3,
+              width:'90%'
+            }
+          })}
         >
           <Typography
             sx={{
