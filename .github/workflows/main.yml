@@ -13,12 +13,6 @@ jobs:
       - name: Install Dependencies
         run: npm install
       - name: Build
-        run: npm run build
-      - name: Archive Production Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: build
-          path: build
         env:
           CI: false
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
@@ -52,7 +46,12 @@ jobs:
 
           REACT_APP_FIREBASE_STORAGE_ROOT: ${{ secrets.REACT_APP_FIREBASE_STORAGE_ROOT }}
           REACT_APP_FIREBASE_STORAGE_POSTS: ${{ secrets.REACT_APP_FIREBASE_STORAGE_POSTS }}
-          args: deploy --only hosting
+        run: npm run build
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: build
   deploy:
     name: Deploy
     needs: build
@@ -68,3 +67,4 @@ jobs:
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
+          args: deploy --only hosting
