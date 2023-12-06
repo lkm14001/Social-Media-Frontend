@@ -91,8 +91,8 @@ const Register = () => {
         dispatch(registerAsync(registerData)).then((res) => {
           if (res.meta.requestStatus === "fulfilled") {
             navigate("/login");
-          } else if(res.meta.requestStatus === 'rejected'){
-            setOpen(true)
+          } else if (res.meta.requestStatus === "rejected") {
+            setOpen(true);
           }
           // else if(res ) {
 
@@ -112,14 +112,14 @@ const Register = () => {
           alignItems: "center",
           minHeight: "100vh",
           width: "100vw",
-          p: 7,
+          p: 5,
           boxSizing: "border-box",
           backgroundColor: "background.mode",
         }}
       >
         <Paper
           component="div"
-          sx={{
+          sx={(theme) => ({
             width: "30%",
             minHeight: "70%",
             boxSizing: "border-box",
@@ -130,7 +130,20 @@ const Register = () => {
             // backgroundColor: "white",
             px: 5,
             py: 5,
-          }}
+            [theme.breakpoints.down("lg")]: {
+              width: "40%",
+            },
+            [theme.breakpoints.down("md")]: {
+              width: "50%",
+            },
+            [theme.breakpoints.down("ipad")]: {
+              width: "85%",
+            },
+            [theme.breakpoints.down("sm")]: {
+              px: 3,
+              width: "95%",
+            },
+          })}
         >
           <Typography
             sx={{
@@ -216,7 +229,7 @@ const Register = () => {
                 minHeight: "10rem",
                 maxHeight: "15rem",
                 border: "1px solid",
-                borderColor:"border.color"
+                borderColor: "border.color",
               }}
               src={preview}
             />
