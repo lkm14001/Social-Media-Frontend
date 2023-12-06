@@ -43,7 +43,6 @@ const style = {
 };
 
 const Navbar = () => {
-
   const dispatch = useAppDispatch();
   const [search, setSearch] = useState<string>("");
   const navigate = useNavigate();
@@ -61,7 +60,7 @@ const Navbar = () => {
     useState<HTMLButtonElement | null>(null);
 
   const handleFriendRequestsAnchor = (
-    event: React.MouseEvent<HTMLButtonElement>
+    event: React.MouseEvent<any>
   ) => {
     setFriendRequestsAnchor(event.currentTarget);
   };
@@ -161,9 +160,9 @@ const Navbar = () => {
             sx={(theme) => ({
               [theme.breakpoints.down("sm")]: {
                 fontSize: "8vw",
-                letterSpacing:'0px'
+                letterSpacing: "0px",
               },
-              fontSize:'2.5rem',
+              fontSize: "2.5rem",
               // fontWeight: "bolder",
               letterSpacing: "-2px",
               fontFamily: "Agbalumo",
@@ -208,12 +207,12 @@ const Navbar = () => {
           }}
         />
         <Modal open={searchModalOpen} onClose={() => setSearchModalOpen(false)}>
-          <Box sx={(theme) => ({
-            ...style,
-            [theme.breakpoints.down('sm')]:{
-
-            }
-          })}>
+          <Box
+            sx={(theme) => ({
+              ...style,
+              [theme.breakpoints.down("sm")]: {},
+            })}
+          >
             <SearchList
               searchList={searchList}
               setModalOpen={setSearchModalOpen}
@@ -322,6 +321,11 @@ const Navbar = () => {
                 display: "none",
               },
             })}
+            // onClick={() => {
+            //   setFriendRequestsModal(true);
+            //   handleCloseProfileMenu();
+            // }}
+            onClick={handleFriendRequestsAnchor}
           >
             <Box
               component="div"
