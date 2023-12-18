@@ -49,7 +49,7 @@ export const UserLoginAPI = (loginData: any) => {
       })
       .catch((error) => {
         console.log(error);
-        reject(new Error(error.response.data.error));
+        reject(new Error(error?.response?.data?.error || 'Error'));
       });
   });
 };
@@ -318,7 +318,7 @@ export const getUserAPI = (userId: string) => {
   return new Promise<any>((resolve, reject) => {
     axiosAuthInstance
       .get(
-        `${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_PROFILE}${process.env.REACT_APP_GET_USER}/${userId}`
+        `${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_PROFILE}${process.env.REACT_APP_GET_USER}/${userId}`,{withCredentials:true}
       )
       .then((res) => {
         if (res.status === 200) {

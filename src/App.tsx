@@ -53,26 +53,28 @@ const App = () => {
     return response;
   };
 
-  axiosAuthInstance.interceptors.request.use(
-    async (config) => {
-      const response = refreshToken();
-      if ((await response).data.success === true) {
-        console.log("REFRESH TOKEN VALID");
-        config.withCredentials = true;
-      } else {
-        dispatch(logoutAsync()).then((res) => {
-          if (res.meta.requestStatus === "fulfilled") {
-            navigate("/login");
-          }
-        });
-        // console.log("LOGEGED OUT");
+  useEffect(() => {
+    axiosAuthInstance.interceptors.request.use(
+      async (config) => {
+        const response = refreshToken();
+        if ((await response).data.success === true) {
+          console.log("REFRESH TOKEN VALID");
+          config.withCredentials = true;
+        } else {
+          dispatch(logoutAsync()).then((res) => {
+            if (res.meta.requestStatus === "fulfilled") {
+              navigate("/login");
+            }
+          });
+          // console.log("LOGEGED OUT");
+        }
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
       }
-      return config;
-    },
-    (error) => {
-      return console.log(error)
-    }
-  );
+    );
+  }, []);
 
   return (
     <>
