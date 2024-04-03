@@ -66,7 +66,7 @@ To run this project, you will need to add the following environment variables to
 `REACT_APP_FIREBASE_MEASUREMENT_ID`  
 
 
-- These are environment variables for paths for storing pictures in firebase storage
+- These are environment variables for paths for storing pictures in firebase storage  
 `REACT_APP_FIREBASE_STORAGE_ROOT`  
 `REACT_APP_FIREBASE_STORAGE_POSTS`  
 
