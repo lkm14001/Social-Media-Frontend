@@ -1,48 +1,125 @@
-# Social-Media---Frontend
-Social Media App using React.js, Redux-Toolkit, Material UI 
-# Getting Started with Create React App
+# socializemedia
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) TS template.
+"SocializeMedia" is an e-commerce app to demonstrate how to put "full-stack" development together. It contains the basic CRUD for creating post, editing post, deleting and updating the posts. Follow and accept or ignore other 
 
-## Available Scripts
+## Tech Stack
 
-In the project directory, you can run:
+**Backend:**
 
-### `npm start`
+- Node.js / Express.js
+- MongoDB
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+**Frontend:**
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- React
+- Redux-Toolkit
+- Material UI
+- Typescript
 
-### `npm test`
+## Features
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Create Post
+- Update/Edit existing Post
+- Delete Existing Post
+- Follow other users on platform
+- Accept or ignore the Friend Request
+- Like a Post
+- comment on a Post
 
-### `npm run build`
+## Environment Variables (Client APP - React)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To run this project, you will need to add the following environment variables to your .env file
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+`REACT_APP_BASE_URL` - base url of the server(localhost server), change it to the server url after deploying.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Environment variables of api routes defined in server
+- These are used in async thunks in redux toolkit
 
-### `npm run eject`
+`REACT_APP_USER_LOGIN`
+`REACT_APP_USER_REGISTER`
+`REACT_APP_USER_LOGOUT`
+`REACT_APP_REFRESH_TOKEN`
+`REACT_APP_PROFILE`
+`REACT_APP_GET_UPDATED_POST`
+`REACT_APP_UPDATE_BIO`
+`REACT_APP_ADD_POST`
+`REACT_APP_DELETE_POST`
+`REACT_APP_EDIT_POST`
+`REACT_APP_ADD_COMMENT`
+`REACT_APP_LIKE_POST`
+`REACT_APP_REMOVE_LIKE`
+`REACT_APP_SEND_FRIEND_REQUEST`
+`REACT_APP_ACCEPT_FRIEND_REQUEST`
+`REACT_APP_REMOVE_FRIEND`
+`REACT_APP_SEARCH`
+`REACT_APP_GET_USER`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- After creating a project in firebase add these environment variables in .env file
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+`REACT_APP_FIREBASE_API_KEY`
+`REACT_APP_FIREBASE_AUTH_DOMAIN`
+`REACT_APP_FIREBASE_PROJECT_ID`
+`REACT_APP_FIREBASE_STORAGE_BUCKET`
+`REACT_APP_FIREBASE_MESSAGING_SENDER_ID`
+`REACT_APP_FIREBASE_APP_ID`
+`REACT_APP_FIREBASE_MEASUREMENT_ID`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+- These are environment variables for paths for storing pictures in firebase storage
+`REACT_APP_FIREBASE_STORAGE_ROOT`
+`REACT_APP_FIREBASE_STORAGE_POSTS`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Run Locally
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Clone the project (client app - Frontend)
+
+```bash
+  git clone https://github.com/lkm14001/Social-Media-Frontend.git
+```
+
+Clone the project (client app - Backend)
+
+```bash
+  git clone https://github.com/lkm14001/Social-Media-Backend.git
+```
+
+
+Install dependencies
+
+```bash
+  cd client
+  npm install
+```
+
+Install dependencies of Server
+
+```bash
+  cd server
+  npm install
+```
+
+## Environment Variables (Server)
+To run this project, you will need to add the following environment variables to your .env file
+`mongoURI` - uri of your mongodb cluster
+`SERVER_PORT` - your server port
+`JWT_SECRET` - SECRET variable for signing jwt tokens
+`JWT_REFRESH_SECRET` - SECRET variable for signing jwt refresh tokens
+`NODE_ENV` - environment of your node app - dev or production
+`CLIENT_URL` - url of your client app - for dev usually the react app url, for production use the deployed url of the react app.
+
+
+Start the react app
+
+```bash
+  cd client
+  npm start
+```
+
+```bash
+  cd server
+  npm run dev
+```
+
+## Screenshots
+
