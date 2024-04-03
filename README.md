@@ -35,40 +35,40 @@ To run this project, you will need to add the following environment variables to
 - Environment variables of api routes defined in server
 - These are used in async thunks in redux toolkit
 
-`REACT_APP_USER_LOGIN`
-`REACT_APP_USER_REGISTER`
-`REACT_APP_USER_LOGOUT`
-`REACT_APP_REFRESH_TOKEN`
-`REACT_APP_PROFILE`
-`REACT_APP_GET_UPDATED_POST`
-`REACT_APP_UPDATE_BIO`
-`REACT_APP_ADD_POST`
-`REACT_APP_DELETE_POST`
-`REACT_APP_EDIT_POST`
-`REACT_APP_ADD_COMMENT`
-`REACT_APP_LIKE_POST`
-`REACT_APP_REMOVE_LIKE`
-`REACT_APP_SEND_FRIEND_REQUEST`
-`REACT_APP_ACCEPT_FRIEND_REQUEST`
-`REACT_APP_REMOVE_FRIEND`
-`REACT_APP_SEARCH`
-`REACT_APP_GET_USER`
+`REACT_APP_USER_LOGIN`  
+`REACT_APP_USER_REGISTER`  
+`REACT_APP_USER_LOGOUT`  
+`REACT_APP_REFRESH_TOKEN`  
+`REACT_APP_PROFILE`  
+`REACT_APP_GET_UPDATED_POST`  
+`REACT_APP_UPDATE_BIO`  
+`REACT_APP_ADD_POST`  
+`REACT_APP_DELETE_POST`  
+`REACT_APP_EDIT_POST`  
+`REACT_APP_ADD_COMMENT`  
+`REACT_APP_LIKE_POST`  
+`REACT_APP_REMOVE_LIKE`  
+`REACT_APP_SEND_FRIEND_REQUEST`  
+`REACT_APP_ACCEPT_FRIEND_REQUEST`  
+`REACT_APP_REMOVE_FRIEND`  
+`REACT_APP_SEARCH`  
+`REACT_APP_GET_USER`  
 
 
 - After creating a project in firebase add these environment variables in .env file
 
-`REACT_APP_FIREBASE_API_KEY`
-`REACT_APP_FIREBASE_AUTH_DOMAIN`
-`REACT_APP_FIREBASE_PROJECT_ID`
-`REACT_APP_FIREBASE_STORAGE_BUCKET`
-`REACT_APP_FIREBASE_MESSAGING_SENDER_ID`
-`REACT_APP_FIREBASE_APP_ID`
-`REACT_APP_FIREBASE_MEASUREMENT_ID`
+`REACT_APP_FIREBASE_API_KEY`  
+`REACT_APP_FIREBASE_AUTH_DOMAIN`  
+`REACT_APP_FIREBASE_PROJECT_ID`  
+`REACT_APP_FIREBASE_STORAGE_BUCKET`  
+`REACT_APP_FIREBASE_MESSAGING_SENDER_ID`  
+`REACT_APP_FIREBASE_APP_ID`  
+`REACT_APP_FIREBASE_MEASUREMENT_ID`  
 
 
 - These are environment variables for paths for storing pictures in firebase storage
-`REACT_APP_FIREBASE_STORAGE_ROOT`
-`REACT_APP_FIREBASE_STORAGE_POSTS`
+`REACT_APP_FIREBASE_STORAGE_ROOT`  
+`REACT_APP_FIREBASE_STORAGE_POSTS`  
 
 ## Run Locally
 
@@ -100,13 +100,13 @@ Install dependencies of Server
 ```
 
 ## Environment Variables (Server)
-To run this project, you will need to add the following environment variables to your .env file
-`mongoURI` - uri of your mongodb cluster
-`SERVER_PORT` - your server port
-`JWT_SECRET` - SECRET variable for signing jwt tokens
-`JWT_REFRESH_SECRET` - SECRET variable for signing jwt refresh tokens
-`NODE_ENV` - environment of your node app - dev or production
-`CLIENT_URL` - url of your client app - for dev usually the react app url, for production use the deployed url of the react app.
+To run this project, you will need to add the following environment variables to your .env file  
+`mongoURI` - uri of your mongodb cluster  
+`SERVER_PORT` - your server port  
+`JWT_SECRET` - SECRET variable for signing jwt tokens  
+`JWT_REFRESH_SECRET` - SECRET variable for signing jwt refresh tokens  
+`NODE_ENV` - environment of your node app - dev or production  
+`CLIENT_URL` - url of your client app - for dev usually the react app url, for production use the deployed url of the react app.  
 
 
 Start the react app
