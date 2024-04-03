@@ -25,6 +25,7 @@
 - Accept or ignore the Friend Request
 - Like a Post
 - comment on a Post
+- Search Users available on platform
 
 ## Environment Variables (Client APP - React)
 
@@ -122,4 +123,7 @@ Start the react app
 ```
 
 ## Screenshots
-
+Home Page  
+![Home Page](https://github.com/lkm14001/Social-Media-Backend/blob/c8782f223f2ecb2deadcb0ec2f201a73e7056fa8/SocializeMedia1.png)  
+Profile Page  
+![Profile Page](https://github.com/lkm14001/Social-Media-Backend/blob/1b5052e4409804b227d9471f8d61330f6f4e21d7/SocializeMedia2.png)  
